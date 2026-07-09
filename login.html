@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — LensArt Photography Portfolio</title>
+  <meta name="description" content="Log in to your LensArt account to access your dashboard, saved photos, and exclusive content." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>" />
+</head>
+<body>
+
+<div class="auth-bg-blob-1"></div>
+<div class="auth-bg-blob-2"></div>
+<div class="auth-bg-grid"></div>
+
+<main class="auth-page">
+  <div class="auth-container">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <a href="index.html">
+        <span class="logo-icon">📷</span>
+        Lens<span>Art</span>
+      </a>
+    </div>
+
+    <!-- Card -->
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <h1 class="auth-title">Welcome back 👋</h1>
+        <p class="auth-subtitle">Enter your credentials to access your account.</p>
+      </div>
+
+      <!-- Alert -->
+      <div class="alert alert-error" id="login-alert" role="alert">
+        <span class="alert-icon">⚠️</span>
+        <span id="login-alert-text"></span>
+      </div>
+
+      <!-- Form -->
+      <form id="login-form" novalidate>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <span class="form-error" id="email-error">⚠ Please enter a valid email.</span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔑</span>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-input"
+              placeholder="Your password"
+              autocomplete="current-password"
+              required
+            />
+            <button type="button" class="toggle-password" id="toggle-pw" aria-label="Toggle password visibility">
+              👁
+            </button>
+          </div>
+          <span class="form-error" id="password-error">⚠ Password is required.</span>
+        </div>
+
+        <!-- Options row -->
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember-me" name="remember" />
+            Remember me
+          </label>
+          <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary btn-submit" id="login-btn">
+          Sign In →
+        </button>
+
+      </form>
+
+      <p class="auth-footer-link">
+        Don't have an account? <a href="signup.html" id="signup-link">Create one for free</a>
+      </p>
+    </div>
+
+    <!-- Back link -->
+    <div style="text-align:center;margin-top:1.5rem;">
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+  </div>
+</main>
+
+<script src="js/auth.js"></script>
+<script>
+  // Redirect if already logged in
+  Auth.redirectIfLoggedIn('dashboard.html');
+
+  // Pre-fill remembered email
+  const rememberedEmail = Auth.getRememberedEmail();
+  if (rememberedEmail) {
+    document.getElementById('email').value = rememberedEmail;
+    document.getElementById('remember-me').checked = true;
+  }
+
+  // Toggle password visibility
+  document.getElementById('toggle-pw').addEventListener('click', function() {
+    const pw = document.getElementById('password');
+    const isText = pw.type === 'text';
+    pw.type = isText ? 'password' : 'text';
+    this.textContent = isText ? '👁' : '🙈';
+  });
+
+  // Form submit
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const remember = document.getElementById('remember-me').checked;
+
+    // Clear errors
+    document.getElementById('email-error').classList.remove('show');
+    document.getElementById('password-error').classList.remove('show');
+    document.getElementById('login-alert').classList.remove('show');
+
+    // Basic validation
+    let valid = true;
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      document.getElementById('email-error').classList.add('show');
+      document.getElementById('email').classList.add('error');
+      valid = false;
+    } else {
+      document.getElementById('email').classList.remove('error');
+    }
+
+    if (!password) {
+      document.getElementById('password-error').classList.add('show');
+      document.getElementById('password').classList.add('error');
+      valid = false;
+    } else {
+      document.getElementById('password').classList.remove('error');
+    }
+
+    if (!valid) return;
+
+    // Loading state
+    const btn = document.getElementById('login-btn');
+    btn.textContent = 'Signing in…';
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    setTimeout(() => {
+      const result = Auth.login(email, password, remember);
+
+      if (result.success) {
+        btn.textContent = '✔ Success! Redirecting…';
+        const params = new URLSearchParams(window.location.search);
+        const redir = params.get('redirect');
+
+        // Run terminal boot sequence if available
+        if (window.FeatureActivation) {
+          FeatureActivation.runActivationSequence(() => {
+            window.location.href = redir ? decodeURIComponent(redir) : 'dashboard.html';
+          });
+        } else {
+          setTimeout(() => { window.location.href = redir ? decodeURIComponent(redir) : 'dashboard.html'; }, 700);
+        }
+      } else {
+        // Show error
+        document.getElementById('login-alert-text').textContent = result.message;
+        document.getElementById('login-alert').classList.add('show');
+        btn.textContent = 'Sign In →';
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    }, 500);
+  });
+
+  // Preserve redirect parameter
+  const params = new URLSearchParams(window.location.search);
+  const redir = params.get('redirect');
+  if (redir) {
+    document.getElementById('signup-link').href = `signup.html?redirect=${encodeURIComponent(redir)}`;
+  }
+</script>
+</body>
+</html>
