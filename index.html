@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LensArt — Photography Portfolio | Discover World-Class Photographers</title>
+  <meta name="description" content="Explore stunning photography portfolios from world-class photographers. Landscape, portrait, and street photography from Alex Chen, Maya Rodriguez, and Sofia Andersson." />
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Favicon emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="logo-icon">📷</span>
+    Lens<span>Art</span>
+  </a>
+
+  <ul class="nav-center">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#photographers">Photographers</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+
+  <div class="nav-auth" id="nav-auth">
+    <a href="login.html" class="btn btn-ghost">Login</a>
+    <a href="signup.html" class="btn btn-primary">Sign Up Free</a>
+  </div>
+
+  <!-- Mobile hamburger -->
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile nav overlay -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="index.html">Home</a>
+  <a href="#photographers">Photographers</a>
+  <a href="#about">About</a>
+  <a href="login.html">Login</a>
+  <a href="signup.html" class="btn btn-primary btn-lg">Sign Up Free</a>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="hero-grid-pattern"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      World-Class Photography Portfolio
+    </div>
+
+    <h1 class="hero-title">
+      Where <span class="highlight">Light</span><br />
+      Meets <span class="highlight">Art</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      Discover the world through the lenses of three extraordinary photographers —
+      each capturing life's most breathtaking moments.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#photographers" class="btn btn-primary btn-lg">
+        Explore Portfolios
+      </a>
+      <a href="signup.html" class="btn btn-outline btn-lg">
+        Join LensArt
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-scroll-indicator" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     STATS STRIP
+═══════════════════════════════════════════ -->
+<div class="stats-strip">
+  <div class="stats-strip-inner">
+    <div>
+      <span class="strip-stat-value" data-count="3" data-suffix="">3</span>
+      <span class="strip-stat-label">Photographers</span>
+    </div>
+    <div>
+      <span class="strip-stat-value" data-count="360" data-suffix="+">360+</span>
+      <span class="strip-stat-label">Photos</span>
+    </div>
+    <div>
+      <span class="strip-stat-value" data-count="12" data-suffix="">12</span>
+      <span class="strip-stat-label">Awards Won</span>
+    </div>
+    <div>
+      <span class="strip-stat-value" data-count="50" data-suffix="K+">50K+</span>
+      <span class="strip-stat-label">Gallery Views</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHOTOGRAPHERS SECTION
+═══════════════════════════════════════════ -->
+<section class="section" id="photographers">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="section-tag">Meet the Artists</span>
+      <h2 class="section-title">Our Featured<br /><em>Photographers</em></h2>
+      <p class="section-subtitle">
+        Three unique visual storytellers, each with a distinct eye and an extraordinary body of work.
+      </p>
+    </div>
+
+    <div class="photographers-grid">
+
+      <!-- Card 1: Alex Chen -->
+      <a href="photographer/alex.html" class="photographer-card fade-in fade-in-delay-1">
+        <div class="card-image-wrapper">
+          <img
+            class="card-image"
+            src="assets/images/alex.png"
+            alt="Alex Chen — Landscape & Nature Photographer"
+            loading="lazy"
+          />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-number">01</div>
+        </div>
+        <div class="card-body">
+          <div class="card-specialty">
+            <span class="tag">Landscape</span>
+            <span class="tag">Nature</span>
+            <span class="tag">Aerial</span>
+          </div>
+          <h3 class="card-name">Alex Chen</h3>
+          <p class="card-location">📍 Denver, Colorado, USA</p>
+          <p class="card-bio">
+            A passionate landscape photographer capturing the raw, untamed beauty of America's mountains,
+            valleys, and skies. Alex's work invites you to see nature as a living, breathing masterpiece.
+          </p>
+          <div class="card-footer">
+            <div class="card-stats">
+              <div>
+                <span class="stat-value">142</span>
+                <span class="stat-label">Photos</span>
+              </div>
+              <div>
+                <span class="stat-value">8</span>
+                <span class="stat-label">Awards</span>
+              </div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2: Maya Rodriguez -->
+      <a href="photographer/maya.html" class="photographer-card fade-in fade-in-delay-2">
+        <div class="card-image-wrapper">
+          <img
+            class="card-image"
+            src="assets/images/maya.png"
+            alt="Maya Rodriguez — Portrait & Editorial Photographer"
+            loading="lazy"
+          />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-number">02</div>
+        </div>
+        <div class="card-body">
+          <div class="card-specialty">
+            <span class="tag">Portrait</span>
+            <span class="tag">Editorial</span>
+            <span class="tag">Fashion</span>
+          </div>
+          <h3 class="card-name">Maya Rodriguez</h3>
+          <p class="card-location">📍 New York City, New York, USA</p>
+          <p class="card-bio">
+            A celebrated portrait and editorial photographer whose lens captures the soul behind every face.
+            Maya's striking imagery has graced major magazine covers and gallery walls across Manhattan.
+          </p>
+          <div class="card-footer">
+            <div class="card-stats">
+              <div>
+                <span class="stat-value">118</span>
+                <span class="stat-label">Photos</span>
+              </div>
+              <div>
+                <span class="stat-value">5</span>
+                <span class="stat-label">Awards</span>
+              </div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 3: Sofia Andersson -->
+      <a href="photographer/sofia.html" class="photographer-card fade-in fade-in-delay-3">
+        <div class="card-image-wrapper">
+          <img
+            class="card-image"
+            src="assets/images/sofia.png"
+            alt="Sofia Andersson — Street & Urban Photographer"
+            loading="lazy"
+          />
+          <div class="card-image-overlay"></div>
+          <div class="card-image-number">03</div>
+        </div>
+        <div class="card-body">
+          <div class="card-specialty">
+            <span class="tag">Street</span>
+            <span class="tag">Urban</span>
+            <span class="tag">Documentary</span>
+          </div>
+          <h3 class="card-name">Sofia Andersson</h3>
+          <p class="card-location">📍 Tokyo, Japan</p>
+          <p class="card-bio">
+            A fearless street photographer roaming the vibrant alleys and neon-lit streets of Tokyo.
+            Sofia's documentary-style work tells the unfiltered stories of city life in all its beauty.
+          </p>
+          <div class="card-footer">
+            <div class="card-stats">
+              <div>
+                <span class="stat-value">98</span>
+                <span class="stat-label">Photos</span>
+              </div>
+              <div>
+                <span class="stat-value">4</span>
+                <span class="stat-label">Awards</span>
+              </div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- LensArt Network Available Photographers -->
+    <div id="joined-photographers-section" style="margin-top: 5rem; display: none;">
+      <div class="section-header fade-in visible">
+        <span class="section-tag">LensArt Network Directory</span>
+        <h2 class="section-title">Photographers For <em>Work</em></h2>
+        <p class="section-subtitle">
+          Discover newly joined professional photographers showcasing their portfolios and ready for bookings.
+        </p>
+      </div>
+      <div class="photographers-grid" id="network-photographers-grid">
+        <!-- Dynamically Populated -->
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     ABOUT SECTION
+═══════════════════════════════════════════ -->
+<section class="section" id="about" style="background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <span class="section-tag">Our Mission</span>
+      <h2 class="section-title">Photography is<br /><em>Storytelling</em></h2>
+      <p class="section-subtitle">
+        LensArt is a curated platform that connects photography lovers with the artists
+        who see the world differently. Every image here has a story worth telling.
+      </p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;max-width:1000px;margin:0 auto;">
+      <div class="photographer-card fade-in fade-in-delay-1" style="padding:2rem;cursor:default;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🏆</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:0.5rem;">Award-Winning Work</h3>
+        <p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">Our photographers have collectively won over 12 international photography awards.</p>
+      </div>
+      <div class="photographer-card fade-in fade-in-delay-2" style="padding:2rem;cursor:default;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🌍</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:0.5rem;">Global Perspectives</h3>
+        <p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">From Colorado mountains to Tokyo streets — three continents captured through one platform.</p>
+      </div>
+      <div class="photographer-card fade-in fade-in-delay-3" style="padding:2rem;cursor:default;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">🤝</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:0.5rem;">Community First</h3>
+        <p style="color:var(--text-secondary);font-size:0.875rem;line-height:1.7;">Join thousands of photography enthusiasts who explore, appreciate, and discuss great imagery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CTA SECTION
+═══════════════════════════════════════════ -->
+<section class="section" id="contact">
+  <div style="max-width:700px;margin:0 auto;text-align:center;" class="fade-in">
+    <span class="section-tag">Get Started Today</span>
+    <h2 class="section-title">Ready to Explore?</h2>
+    <p class="section-subtitle" style="max-width:100%;">
+      Create a free account to save your favourite photos, follow photographers,
+      and get access to exclusive content updates.
+    </p>
+    <div style="margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="signup.html" class="btn btn-primary btn-lg">Create Free Account</a>
+      <a href="login.html" class="btn btn-outline btn-lg">Already a Member?</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="footer-logo">📷 LensArt</span>
+        <p>A curated photography portfolio platform celebrating the art of visual storytelling.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Photographers</h4>
+          <a href="photographer/alex.html">Alex Chen</a>
+          <a href="photographer/maya.html">Maya Rodriguez</a>
+          <a href="photographer/sofia.html">Sofia Andersson</a>
+        </div>
+        <div class="footer-col">
+          <h4>Account</h4>
+          <a href="login.html">Login</a>
+          <a href="signup.html">Sign Up</a>
+          <a href="forgot-password.html">Forgot Password</a>
+          <a href="dashboard.html">Dashboard</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 LensArt Photography. All rights reserved.</span>
+      <span>Made with ❤️ for art lovers</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // Update navbar with current auth state
+  Auth.updateNav('./');
+
+  // Load newly joined photographers from local storage
+  function loadJoinedPhotographers() {
+    const users = JSON.parse(localStorage.getItem('photofolio_users') || '[]');
+    const photographers = users.filter(u => u.role === 'photographer');
+
+    if (photographers.length === 0) return;
+
+    const section = document.getElementById('joined-photographers-section');
+    const grid = document.getElementById('network-photographers-grid');
+    if (!section || !grid) return;
+
+    section.style.display = 'block';
+
+    grid.innerHTML = photographers.map(p => {
+      const initials = p.name.charAt(0).toUpperCase();
+      const tags = (p.specialty || 'Portrait').split(',').map(t => t.trim());
+      const tagsHtml = tags.map(t => `<span class="tag">${t}</span>`).join(' ');
+      const photosCount = p.portfolioPhotos ? p.portfolioPhotos.length : 0;
+      
+      return `
+        <a href="photographer/profile.html?id=${p.id}" class="photographer-card fade-in visible">
+          <div class="card-image-wrapper">
+            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:4rem; font-weight:800; color:#fff; background:linear-gradient(135deg, var(--accent), var(--accent-dark)); text-transform:uppercase; font-family:'Playfair Display',serif;">
+              ${initials}
+            </div>
+            <div class="card-image-overlay"></div>
+            <div class="card-image-number">★</div>
+          </div>
+          <div class="card-body">
+            <div class="card-specialty">
+              ${tagsHtml}
+            </div>
+            <h3 class="card-name">${p.name}</h3>
+            <p class="card-location">📍 ${p.location || 'Paris, France'}</p>
+            <p class="card-bio">${p.bio || 'Professional photographer ready for bookings.'}</p>
+            <div class="card-footer">
+              <div class="card-stats">
+                <div>
+                  <span class="stat-value">${photosCount}</span>
+                  <span class="stat-label">Photos</span>
+                </div>
+                <div>
+                  <span class="stat-value">$${p.rate || '150'}</span>
+                  <span class="stat-label">Rate/hr</span>
+                </div>
+              </div>
+              <div class="card-arrow">→</div>
+            </div>
+          </div>
+        </a>
+      `;
+    }).join('');
+  }
+
+  loadJoinedPhotographers();
+</script>
+</body>
+</html>
+
+<!-- polished -->
