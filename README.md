@@ -29,3 +29,4 @@ LensArt is a vibrant, modern client-side photography portfolio and hiring platfo
    ```bash
    npx live-server
    ```
+3. open Local host to view in Your Browser
