@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — LensArt Photography Portfolio</title>
+  <meta name="description" content="Your personal LensArt dashboard. Manage your account and explore your favourite photographers." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>" />
+  <style>
+    .dashboard-page {
+      min-height: 100vh;
+      padding: 8rem 2rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .dashboard-header {
+      margin-bottom: 3rem;
+    }
+
+    .welcome-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 1rem;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .dashboard-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 0.5rem;
+    }
+
+    .dashboard-title span { color: var(--accent); }
+
+    .dashboard-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .dash-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+    }
+
+    .dash-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+    }
+
+    .dash-card-icon {
+      font-size: 2.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .dash-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.375rem;
+    }
+
+    .dash-card-value {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .dash-card-desc {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: 0.25rem;
+    }
+
+    .dash-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Interactive Studio CSS */
+    .studio-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 3rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .studio-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .camera-feed-container {
+      display: none;
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 2px solid var(--accent);
+      background: #000;
+    }
+
+    #webcam-stream {
+      width: 100%;
+      height: auto;
+      display: block;
+      transform: scaleX(-1); /* mirror effect */
+    }
+
+    .camera-overlay-controls {
+      position: absolute;
+      bottom: 1rem;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      z-index: 10;
+    }
+
+    .personal-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .personal-photo-card {
+      position: relative;
+      aspect-ratio: 4/3;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #111;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .personal-photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .personal-photo-card:hover img {
+      transform: scale(1.05);
+      filter: brightness(0.7);
+    }
+
+    .personal-photo-card:hover {
+      border-color: var(--accent);
+    }
+
+    .photo-remove-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: rgba(239, 68, 68, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.8rem;
+      z-index: 20;
+      transition: var(--transition);
+      opacity: 0;
+    }
+
+    .personal-photo-card:hover .photo-remove-btn {
+      opacity: 1;
+    }
+
+    .photo-remove-btn:hover {
+      background: #ef4444;
+      transform: scale(1.1);
+    }
+
+    .empty-gallery-msg {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    /* Lightbox specific for dashboard */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      background: rgba(0, 0, 0, 0.95);
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: min(90vw, 900px);
+      max-height: 80vh;
+    }
+
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -2.5rem;
+      right: 0;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .photographer-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .photographer-list-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+
+    .photographer-list-item:hover {
+      border-color: var(--border-hover);
+      transform: translateX(6px);
+    }
+
+    .photographer-list-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .photographer-list-info { flex: 1; }
+
+    .photographer-list-name {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .photographer-list-specialty {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    .photographer-list-arrow {
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    .user-info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .user-avatar-placeholder {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      color: #fff;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .user-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .user-info p { color: var(--text-secondary); font-size: 0.875rem; }
+
+    .user-info .member-since {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Bookings & Follows tables/grids */
+    .booking-item {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      transition: var(--transition);
+    }
+    .booking-item:hover {
+      border-color: var(--accent);
+    }
+    .booking-details-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .booking-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+    }
+    .booking-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .booking-msg {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-top: 0.25rem;
+    }
+    .booking-status {
+      padding: 0.35rem 0.85rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .status-pending {
+      background: rgba(99, 102, 241, 0.08);
+      color: var(--accent-dark);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+    .status-confirmed {
+      background: rgba(34, 197, 94, 0.08);
+      color: #16a34a;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+    .btn-cancel-booking {
+      background: none;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-cancel-booking:hover {
+      background: #ef4444;
+      color: white;
+      border-color: #ef4444;
+    }
+    
+    .followed-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .followed-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition);
+    }
+    .followed-card:hover {
+      border-color: var(--accent);
+    }
+    .followed-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .followed-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+    .followed-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    .followed-name:hover {
+      color: var(--accent);
+    }
+    .btn-unfollow {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      transition: var(--transition);
+      padding: 4px;
+    }
+    .btn-unfollow:hover {
+      color: #ef4444;
+      transform: scale(1.15);
+    }
+
+    @media (max-width: 600px) {
+      .dashboard-page { padding: 7rem 1.25rem 3rem; }
+      .user-info-card { flex-direction: column; text-align: center; }
+      .studio-controls { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <span class="logo-icon">📷</span>
+    Lens<span>Art</span>
+  </a>
+  <ul class="nav-center">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#photographers">Photographers</a></li>
+  </ul>
+  <div class="nav-auth" id="nav-auth"></div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<main class="dashboard-page">
+
+  <!-- Header -->
+  <div class="dashboard-header fade-in">
+    <div class="welcome-badge">
+      <span>🏠</span> Member Dashboard
+    </div>
+    <h1 class="dashboard-title">
+      Hello, <span id="user-name-display">Photographer</span>! 👋
+    </h1>
+    <p class="dashboard-subtitle">Welcome back to your LensArt dashboard.</p>
+  </div>
+
+  <!-- User Info -->
+  <div class="user-info-card fade-in">
+    <div class="user-avatar-placeholder" id="user-avatar-initial">?</div>
+    <div class="user-info">
+      <h2 id="user-full-name">—</h2>
+      <p id="user-email-display">—</p>
+      <p class="member-since" id="user-member-since">Member since —</p>
+    </div>
+    <div style="margin-left:auto;">
+      <button
+        onclick="Auth.logout('index.html')"
+        class="btn btn-danger"
+        id="logout-btn"
+      >
+        🚪 Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="dashboard-grid">
+    <div class="dash-card fade-in fade-in-delay-1">
+      <div class="dash-card-icon" id="stat-card-icon-1">📷</div>
+      <div class="dash-card-title" id="stat-card-title-1">Photos Viewed</div>
+      <div class="dash-card-value" id="stat-card-value-1">24</div>
+      <p class="dash-card-desc" id="stat-card-desc-1">Explore more galleries to track your views</p>
+    </div>
+    <div class="dash-card fade-in fade-in-delay-2">
+      <div class="dash-card-icon" id="stat-card-icon-2">❤️</div>
+      <div class="dash-card-title" id="stat-card-title-2">My Uploads & Captures</div>
+      <div class="dash-card-value" id="my-photos-count">0</div>
+      <p class="dash-card-desc" id="stat-card-desc-2">Personal collection of custom photos</p>
+    </div>
+    <div class="dash-card fade-in fade-in-delay-3">
+      <div class="dash-card-icon" id="stat-card-icon-3">⭐</div>
+      <div class="dash-card-title" id="stat-card-title-3">Photographers</div>
+      <div class="dash-card-value" id="stat-card-value-3">3</div>
+      <p class="dash-card-desc" id="stat-card-desc-3">Featured photographers available to explore</p>
+    </div>
+  </div>
+
+  <!-- Client Only Panel -->
+  <div id="client-panel" style="display: none;">
+    <!-- Interactive Studio Section -->
+    <div class="studio-container fade-in">
+      <h2 class="dash-section-title">✨ My Interactive Studio</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+        Upload photos from your computer or connect to your webcam to capture live pictures directly to your portfolio.
+      </p>
+
+      <!-- Controls -->
+      <div class="studio-controls">
+        <input type="file" id="studio-file-input" accept="image/*" style="display: none;" />
+        <button class="btn btn-primary" onclick="document.getElementById('studio-file-input').click();">
+          📤 Upload Local Photo
+        </button>
+        <button class="btn btn-outline" id="start-camera-btn">
+          📷 Start Camera
+        </button>
+      </div>
+
+      <!-- Live Webcam Stream View -->
+      <div class="camera-feed-container" id="camera-feed-container">
+        <video id="webcam-stream" autoplay playsinline></video>
+        <div class="camera-overlay-controls">
+          <button class="btn btn-primary" id="capture-pic-btn" style="padding: 0.5rem 1rem;">
+            📸 Capture Photo
+          </button>
+          <button class="btn btn-danger" id="stop-camera-btn" style="padding: 0.5rem 1rem;">
+            ✕ Stop Camera
+          </button>
+        </div>
+      </div>
+
+      <!-- Personal Photo Gallery -->
+      <h3 style="font-size: 1.1rem; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;">My Personal Gallery</h3>
+      <div class="personal-gallery" id="personal-gallery">
+        <div class="empty-gallery-msg">No uploaded or captured photos yet. Start adding some!</div>
+      </div>
+    </div>
+
+    <!-- Booking Requests Section -->
+    <div class="studio-container fade-in">
+      <h2 class="dash-section-title">📅 My Booking Requests</h2>
+      <div id="bookings-list-container">
+        <div class="empty-gallery-msg">You have not submitted any booking requests yet.</div>
+      </div>
+    </div>
+
+    <!-- Followed Photographers Section -->
+    <div class="studio-container fade-in">
+      <h2 class="dash-section-title">❤️ Followed Photographers</h2>
+      <div id="followed-list-container">
+        <div class="empty-gallery-msg">You are not following any photographers yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photographer Only Panel -->
+  <div id="photographer-panel" style="display: none;">
+    <!-- Profile Customization -->
+    <div class="studio-container fade-in">
+      <h2 class="dash-section-title">⚙️ Edit My Portfolio Profile</h2>
+      <form class="booking-form" id="photographer-profile-form" onsubmit="savePhotographerProfile(event)">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.25rem;">
+          <div class="form-group">
+            <label class="form-label" for="profile-specialty-input">Specialties (comma-separated)</label>
+            <input type="text" id="profile-specialty-input" class="form-input" placeholder="e.g. Portrait, Editorial, Fashion" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="profile-location-input">Location</label>
+            <input type="text" id="profile-location-input" class="form-input" placeholder="e.g. Paris, France" required />
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.25rem;">
+          <div class="form-group">
+            <label class="form-label" for="profile-rate-input">Hourly Rate ($)</label>
+            <input type="number" id="profile-rate-input" class="form-input" placeholder="e.g. 150" required min="1" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="profile-bio-input">Professional Biography</label>
+            <textarea id="profile-bio-input" class="form-input" placeholder="Tell potential clients about your visual storytelling style..." required style="min-height: 42px;"></textarea>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="padding: 0.65rem 1.75rem;">
+          Save Profile Details
+        </button>
+      </form>
+    </div>
+
+    <!-- Portfolio Photo Gallery Manager -->
+    <div class="studio-container fade-in">
+      <h2 class="dash-section-title">🖼️ Manage Portfolio Gallery</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.95rem;">
+        Upload showcase photographs to display on your public profile page.
+      </p>
+      
+      <div class="studio-controls" style="margin-bottom: 2rem;">
+        <input type="file" id="portfolio-file-input" accept="image/*" style="display: none;" multiple />
+        <button class="btn btn-primary" onclick="document.getElementById('portfolio-file-input').click();">
+          📤 Upload Portfolio Photos
+        </button>
+      </div>
+
+      <h3 style="font-size: 1.1rem; color: var(--accent); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;">My Showcase Gallery</h3>
+      <div class="personal-gallery" id="portfolio-gallery-display">
+        <div class="empty-gallery-msg">No showcase photos uploaded yet.</div>
+      </div>
+    </div>
+
+    <!-- Bookings/Jobs Received Section -->
+    <div class="studio-container fade-in">
+      <h2 class="dash-section-title">📥 Incoming Job Offers</h2>
+      <div id="photographer-jobs-container">
+        <div class="empty-gallery-msg">No job requests received yet. Keep sharing your portfolio!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photographer Links -->
+  <div class="fade-in">
+    <h2 class="dash-section-title">📸 Explore Photographers</h2>
+    <div class="photographer-list">
+
+      <a href="photographer/alex.html" class="photographer-list-item">
+        <img src="assets/images/alex.png" alt="Alex Chen" class="photographer-list-avatar" />
+        <div class="photographer-list-info">
+          <div class="photographer-list-name">Alex Chen</div>
+          <div class="photographer-list-specialty">🏔 Landscape & Nature · Denver, CO</div>
+        </div>
+        <span class="photographer-list-arrow">→</span>
+      </a>
+
+      <a href="photographer/maya.html" class="photographer-list-item">
+        <img src="assets/images/maya.png" alt="Maya Rodriguez" class="photographer-list-avatar" />
+        <div class="photographer-list-info">
+          <div class="photographer-list-name">Maya Rodriguez</div>
+          <div class="photographer-list-specialty">🎭 Portrait & Editorial · New York, NY</div>
+        </div>
+        <span class="photographer-list-arrow">→</span>
+      </a>
+
+      <a href="photographer/sofia.html" class="photographer-list-item">
+        <img src="assets/images/sofia.png" alt="Sofia Andersson" class="photographer-list-avatar" />
+        <div class="photographer-list-info">
+          <div class="photographer-list-name">Sofia Andersson</div>
+          <div class="photographer-list-specialty">🌃 Street & Urban · Tokyo, Japan</div>
+        </div>
+        <span class="photographer-list-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="fade-in">
+    <h2 class="dash-section-title">⚡ Quick Actions</h2>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+      <a href="index.html#photographers" class="btn btn-outline">Browse All Photographers</a>
+      <a href="photographer/alex.html"   class="btn btn-ghost">View Alex's Gallery</a>
+      <a href="photographer/maya.html"   class="btn btn-ghost">View Maya's Gallery</a>
+      <a href="photographer/sofia.html"  class="btn btn-ghost">View Sofia's Gallery</a>
+      <button onclick="Auth.logout('index.html')" class="btn btn-danger">Logout</button>
+    </div>
+  </div>
+
+</main>
+
+<!-- Lightbox Modal for personal gallery -->
+<div class="lightbox" id="dashboard-lightbox" role="dialog" aria-modal="true" aria-label="Personal Photo Lightbox">
+  <div class="lightbox-content">
+    <button class="lightbox-close" id="close-lightbox-btn">✕</button>
+    <img id="dashboard-lightbox-img" src="" alt="Enlarged personal view" class="lightbox-img" />
+  </div>
+</div>
+
+<footer style="margin-top:4rem;background:var(--bg-secondary);border-top:1px solid var(--border);padding:2rem;text-align:center;">
+  <p style="color:var(--text-muted);font-size:0.875rem;">
+    © 2026 LensArt Photography · <a href="index.html" style="color:var(--accent);text-decoration:none;">Back to Home</a>
+  </p>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // Protect this page
+  Auth.requireAuth('login.html');
+
+  // Update navbar
+  Auth.updateNav('./');
+
+  // Fill user info
+  const user = Auth.getCurrentUser();
+  if (user) {
+    document.getElementById('user-name-display').textContent = user.name.split(' ')[0];
+    document.getElementById('user-full-name').textContent = user.name;
+    document.getElementById('user-email-display').textContent = user.email;
+    document.getElementById('user-avatar-initial').textContent = user.name.charAt(0).toUpperCase();
+
+    // Member since (from users store)
+    const users = JSON.parse(localStorage.getItem('photofolio_users') || '[]');
+    const full  = users.find(u => u.id === user.id);
+    if (full && full.createdAt) {
+      const date = new Date(full.createdAt);
+      document.getElementById('user-member-since').textContent =
+        'Member since ' + date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+  }
+
+  // --------------------------------------------------------
+  // Personal Gallery & Webcam Studio Logic
+  // --------------------------------------------------------
+  const storageKey = 'photofolio_uploads_' + (user ? user.id : 'anon');
+  let personalPhotos = [];
+
+  // Load photos from storage
+  function loadPhotos() {
+    const raw = localStorage.getItem(storageKey);
+    try {
+      personalPhotos = raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      personalPhotos = [];
+    }
+    renderPersonalGallery();
+  }
+
+  // Save photos to storage
+  function savePhotos() {
+    localStorage.setItem(storageKey, JSON.stringify(personalPhotos));
+    renderPersonalGallery();
+  }
+
+  // Render personal gallery items
+  function renderPersonalGallery() {
+    const container = document.getElementById('personal-gallery');
+    const counterEl = document.getElementById('my-photos-count');
+    
+    counterEl.textContent = personalPhotos.length;
+
+    if (personalPhotos.length === 0) {
+      container.innerHTML = `<div class="empty-gallery-msg">No uploaded or captured photos yet. Start adding some!</div>`;
+      return;
+    }
+
+    container.innerHTML = personalPhotos.map((photo, i) => `
+      <div class="personal-photo-card" onclick="openLightbox('${photo.src}')">
+        <button class="photo-remove-btn" onclick="event.stopPropagation(); removePhoto('${photo.id}')" title="Remove photo">✕</button>
+        <img src="${photo.src}" alt="Personal upload ${i + 1}" />
+      </div>
+    `).join('');
+  }
+
+  // Upload Local Photo handler
+  document.getElementById('studio-file-input').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const newPhoto = {
+        id: 'user_img_' + Date.now(),
+        src: evt.target.result,
+        timestamp: new Date().toISOString()
+      };
+      personalPhotos.push(newPhoto);
+      savePhotos();
+    };
+    reader.readAsDataURL(file);
+    e.target.value = ''; // Reset uploader input
+  });
+
+  // Remove Photo handler
+  window.removePhoto = function(id) {
+    personalPhotos = personalPhotos.filter(photo => photo.id !== id);
+    savePhotos();
+  };
+
+  // Webcam stream variable
+  let webcamStream = null;
+
+  // Start Camera
+  document.getElementById('start-camera-btn').addEventListener('click', async function() {
+    const streamContainer = document.getElementById('camera-feed-container');
+    const video = document.getElementById('webcam-stream');
+
+    try {
+      webcamStream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+      video.srcObject = webcamStream;
+      streamContainer.style.display = 'block';
+      this.style.display = 'none';
+    } catch (err) {
+      alert('Could not access camera. Please check your camera permissions.');
+      console.error(err);
+    }
+  });
+
+  // Stop Camera function
+  function stopWebcam() {
+    if (webcamStream) {
+      webcamStream.getTracks().forEach(track => track.stop());
+      webcamStream = null;
+    }
+    document.getElementById('camera-feed-container').style.display = 'none';
+    document.getElementById('start-camera-btn').style.display = 'inline-flex';
+  }
+
+  document.getElementById('stop-camera-btn').addEventListener('click', stopWebcam);
+
+  // Capture Photo from Webcam
+  document.getElementById('capture-pic-btn').addEventListener('click', function() {
+    const video = document.getElementById('webcam-stream');
+    if (!webcamStream) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 640;
+    canvas.height = video.videoHeight || 480;
+    const ctx = canvas.getContext('2d');
+    
+    // Draw flipped frame for mirror look correction
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const base64Img = canvas.toDataURL('image/jpeg');
+
+    const newPhoto = {
+      id: 'cam_img_' + Date.now(),
+      src: base64Img,
+      timestamp: new Date().toISOString()
+    };
+
+    personalPhotos.push(newPhoto);
+    savePhotos();
+    stopWebcam();
+  });
+
+  // Lightbox view functions for personal gallery
+  const lightbox = document.getElementById('dashboard-lightbox');
+  const lightboxImg = document.getElementById('dashboard-lightbox-img');
+
+  window.openLightbox = function(src) {
+    lightboxImg.src = src;
+    lightbox.classList.add('active');
+  };
+
+  document.getElementById('close-lightbox-btn').addEventListener('click', function() {
+    lightbox.classList.remove('active');
+  });
+
+  lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) {
+      lightbox.classList.remove('active');
+    }
+  });
+
+  // ── Load Bookings ──
+  function loadBookings() {
+    const container = document.getElementById('bookings-list-container');
+    if (!container) return;
+
+    let bookings = [];
+    try {
+      bookings = JSON.parse(localStorage.getItem('photofolio_bookings') || '[]');
+    } catch(err) {
+      bookings = [];
+    }
+
+    const userBookings = bookings.filter(b => b.userId === user.id);
+
+    if (userBookings.length === 0) {
+      container.innerHTML = `<div class="empty-gallery-msg">You have not submitted any booking requests yet.</div>`;
+      return;
+    }
+
+    container.innerHTML = userBookings.map(b => `
+      <div class="booking-item">
+        <div class="booking-details-col">
+          <div class="booking-title">${b.photographer}</div>
+          <div class="booking-meta">📅 Date: ${new Date(b.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} | 🏷️ Type: ${b.session} | 💰 Budget: ${b.budget}</div>
+          <div class="booking-msg">" ${b.details} "</div>
+        </div>
+        <div style="display:flex; align-items:center; gap: 1rem;">
+          <span class="booking-status status-pending">${b.status}</span>
+          <button class="btn-cancel-booking" onclick="cancelBooking('${b.id}')">Cancel</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Cancel Booking
+  window.cancelBooking = function(id) {
+    let bookings = [];
+    try {
+      bookings = JSON.parse(localStorage.getItem('photofolio_bookings') || '[]');
+    } catch(err) {
+      bookings = [];
+    }
+
+    bookings = bookings.filter(b => b.id !== id);
+    localStorage.setItem('photofolio_bookings', JSON.stringify(bookings));
+    loadBookings();
+    if (window.showToast) {
+      window.showToast("Booking request cancelled.");
+    }
+  };
+
+  // ── Load Followed Photographers ──
+  const photographerAvatars = {
+    'Alex Chen': 'assets/images/alex.png',
+    'Maya Rodriguez': 'assets/images/maya.png',
+    'Sofia Andersson': 'assets/images/sofia.png'
+  };
+  
+  const photographerUrls = {
+    'Alex Chen': 'photographer/alex.html',
+    'Maya Rodriguez': 'photographer/maya.html',
+    'Sofia Andersson': 'photographer/sofia.html'
+  };
+
+  function loadFollowed() {
+    const container = document.getElementById('followed-list-container');
+    if (!container) return;
+
+    const followsKey = 'photofolio_follows_' + user.id;
+    let follows = [];
+    try {
+      follows = JSON.parse(localStorage.getItem(followsKey) || '[]');
+    } catch(e) {
+      follows = [];
+    }
+
+    if (follows.length === 0) {
+      container.innerHTML = `<div class="empty-gallery-msg">You are not following any photographers yet.</div>`;
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="followed-grid">
+        ${follows.map(name => name ? `
+          <div class="followed-card">
+            <div class="followed-info">
+              <img class="followed-avatar" src="${photographerAvatars[name] || 'assets/images/alex.png'}" alt="${name}" />
+              <a href="${photographerUrls[name] || '#'}" class="followed-name">${name}</a>
+            </div>
+            <button class="btn-unfollow" onclick="unfollowPhotographer('${name}')" title="Unfollow">✕</button>
+          </div>
+        ` : '').join('')}
+      </div>
+    `;
+  }
+
+  window.unfollowPhotographer = function(name) {
+    const followsKey = 'photofolio_follows_' + user.id;
+    let follows = [];
+    try {
+      follows = JSON.parse(localStorage.getItem(followsKey) || '[]');
+    } catch(e) {
+      follows = [];
+    }
+
+    follows = follows.filter(n => n !== name);
+    localStorage.setItem(followsKey, JSON.stringify(follows));
+    loadFollowed();
+    if (window.showToast) {
+      window.showToast(`Unfollowed ${name}`);
+    }
+  };
+
+  // Photographer logic implementation
+  window.savePhotographerProfile = function(e) {
+    e.preventDefault();
+    const specialty = document.getElementById('profile-specialty-input').value.trim();
+    const location = document.getElementById('profile-location-input').value.trim();
+    const rate = document.getElementById('profile-rate-input').value.trim();
+    const bio = document.getElementById('profile-bio-input').value.trim();
+
+    const users = JSON.parse(localStorage.getItem('photofolio_users') || '[]');
+    const userIdx = users.findIndex(u => u.id === user.id);
+    if (userIdx !== -1) {
+      users[userIdx].specialty = specialty;
+      users[userIdx].location = location;
+      users[userIdx].rate = rate;
+      users[userIdx].bio = bio;
+      localStorage.setItem('photofolio_users', JSON.stringify(users));
+
+      const session = Auth.getCurrentUser();
+      session.specialty = specialty;
+      session.location = location;
+      session.rate = rate;
+      session.bio = bio;
+      localStorage.setItem(Auth.SESSION_KEY, JSON.stringify(session));
+
+      window.showToast("Profile details saved successfully!");
+      loadPhotographerStats();
+    }
+  };
+
+  document.getElementById('portfolio-file-input').addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    let uploadPromises = files.map(file => {
+      return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          resolve(evt.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    Promise.all(uploadPromises).then(base64Photos => {
+      const users = JSON.parse(localStorage.getItem('photofolio_users') || '[]');
+      const userIdx = users.findIndex(u => u.id === user.id);
+      if (userIdx !== -1) {
+        if (!users[userIdx].portfolioPhotos) {
+          users[userIdx].portfolioPhotos = [];
+        }
+        users[userIdx].portfolioPhotos = users[userIdx].portfolioPhotos.concat(base64Photos);
+        localStorage.setItem('photofolio_users', JSON.stringify(users));
+        
+        window.showToast(`Uploaded ${base64Photos.length} photos!`);
+        renderPortfolioGallery();
+        loadPhotographerStats();
+      }
+    });
+    e.target.value = '';
+  });
+
+  window.removePortfolioPhoto = function(index) {
+    const users = JSON.parse(localStorage.getItem('photofolio_users') || '[]');
+    const userIdx = users.findIndex(u => u.id === user.id);
+    if (userIdx !== -1) {
+      if (users[userIdx].portfolioPhotos) {
+        users[userIdx].portfolioPhotos.splice(index, 1);
+        localStorage.setItem('photofolio_users', JSON.stringify(users));
+        renderPortfolioGallery();
+        loadPhotographerStats();
+        window.showToast("Showcase photo removed.");
+      }
+    }
+  };
+
+  function renderPortfolioGallery() {
+    const container = document.getElementById('portfolio-gallery-display');
+    const users = JSON.parse(localStorage.getItem('photofolio_users') || '[]');
+    const activeUser = users.find(u => u.id === user.id);
+    const photos = activeUser && activeUser.portfolioPhotos ? activeUser.portfolioPhotos : [];
+
+    if (photos.length === 0) {
+      container.innerHTML = `<div class="empty-gallery-msg">No showcase photos uploaded yet.</div>`;
+      return;
+    }
+
+    container.innerHTML = photos.map((src, i) => `
+      <div class="personal-photo-card" onclick="openLightbox('${src}')">
+        <button class="photo-remove-btn" onclick="event.stopPropagation(); removePortfolioPhoto(${i})" title="Remove photo">✕</button>
+        <img src="${src}" alt="Showcase photo ${i + 1}" />
+      </div>
+    `).join('');
+  }
+
+  function loadPhotographerJobs() {
+    const container = document.getElementById('photographer-jobs-container');
+    if (!container) return;
+
+    let bookings = [];
+    try {
+      bookings = JSON.parse(localStorage.getItem('photofolio_bookings') || '[]');
+    } catch(err) {
+      bookings = [];
+    }
+
+    const jobs = bookings.filter(b => b.photographerId === user.id || b.photographer === user.name);
+
+    if (jobs.length === 0) {
+      container.innerHTML = `<div class="empty-gallery-msg">No job requests received yet. Keep sharing your portfolio!</div>`;
+      return;
+    }
+
+    container.innerHTML = jobs.map(b => `
+      <div class="booking-item">
+        <div class="booking-details-col">
+          <div class="booking-title">Client: ${b.userName} (${b.userEmail})</div>
+          <div class="booking-meta">📅 Date: ${new Date(b.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} | 🏷️ Type: ${b.session} | 💰 Budget: ${b.budget}</div>
+          <div class="booking-msg">" ${b.details} "</div>
+        </div>
+        <div style="display:flex; align-items:center; gap: 1rem;">
+          <span class="booking-status ${b.status === 'Accepted' ? 'status-confirmed' : 'status-pending'}">${b.status}</span>
+          ${b.status === 'Pending Approval' ? `
+            <button class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.75rem;" onclick="handleJobStatus('${b.id}', 'Accepted')">Accept</button>
+            <button class="btn btn-danger" style="padding: 0.35rem 0.85rem; font-size: 0.75rem;" onclick="handleJobStatus('${b.id}', 'Declined')">Decline</button>
+          ` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.handleJobStatus = function(bookingId, status) {
+    let bookings = [];
+    try {
+      bookings = JSON.parse(localStorage.getItem('photofolio_bookings') || '[]');
+    } catch(err) {
+      bookings = [];
+    }
+
+    const idx = bookings.findIndex(b => b.id === bookingId);
+    if (idx !== -1) {
+      bookings[idx].status = status;
+      localStorage.setItem('photofolio_bookings', JSON.stringify(bookings));
+      loadPhotographerJobs();
+      loadPhotographerStats();
+      window.showToast(`Job offer marked as ${status}.`);
+    }
+  };
+
+  function loadPhotographerStats() {
+    const viewsKey = `photofolio_profile_views_${user.id}`;
+    const views = localStorage.getItem(viewsKey) || '0';
+    document.getElementById('stat-card-title-1').textContent = "Profile Views";
+    document.getElementById('stat-card-value-1').textContent = views;
+    document.getElementById('stat-card-desc-1').textContent = "Total visits to your public profile page";
+    document.getElementById('stat-card-icon-1').textContent = "👁️";
+
+    const users = JSON.parse(localStorage.getItem('photofolio_users') || '[]');
+    const activeUser = users.find(u => u.id === user.id);
+    const photosCount = activeUser && activeUser.portfolioPhotos ? activeUser.portfolioPhotos.length : 0;
+    document.getElementById('stat-card-title-2').textContent = "Portfolio Photos";
+    document.getElementById('my-photos-count').textContent = photosCount;
+    document.getElementById('stat-card-desc-2').textContent = "Total photos published in your showcase gallery";
+    document.getElementById('stat-card-icon-2').textContent = "🖼️";
+
+    let bookings = [];
+    try {
+      bookings = JSON.parse(localStorage.getItem('photofolio_bookings') || '[]');
+    } catch(err) {
+      bookings = [];
+    }
+    const jobsCount = bookings.filter(b => b.photographerId === user.id || b.photographer === user.name).length;
+    document.getElementById('stat-card-title-3').textContent = "Job Offers";
+    document.getElementById('stat-card-value-3').textContent = jobsCount;
+    document.getElementById('stat-card-desc-3').textContent = "Total bookings submitted by LensArt clients";
+    document.getElementById('stat-card-icon-3').textContent = "📥";
+  }
+
+  // Role Router
+  function initDashboardByRole() {
+    if (!user) return;
+    
+    const users = JSON.parse(localStorage.getItem('photofolio_users') || '[]');
+    const fullUser = users.find(u => u.id === user.id) || user;
+    
+    if (fullUser.role === 'photographer') {
+      document.getElementById('photographer-panel').style.display = 'block';
+      document.getElementById('client-panel').style.display = 'none';
+
+      document.getElementById('user-name-display').textContent = fullUser.name.split(' ')[0] + " (Photographer)";
+      
+      document.getElementById('profile-specialty-input').value = fullUser.specialty || 'Portrait';
+      document.getElementById('profile-location-input').value = fullUser.location || 'Paris, France';
+      document.getElementById('profile-rate-input').value = fullUser.rate || '150';
+      document.getElementById('profile-bio-input').value = fullUser.bio || 'Professional photographer ready for bookings.';
+
+      renderPortfolioGallery();
+      loadPhotographerJobs();
+      loadPhotographerStats();
+    } else {
+      document.getElementById('client-panel').style.display = 'block';
+      document.getElementById('photographer-panel').style.display = 'none';
+      
+      document.getElementById('user-name-display').textContent = fullUser.name.split(' ')[0];
+
+      loadPhotos();
+      loadBookings();
+      loadFollowed();
+    }
+  }
+
+  // Init call
+  initDashboardByRole();
+</script>
+</body>
+</html>
+
+<!-- polished -->
