@@ -1,0 +1,6 @@
+﻿.DS_Store
+Thumbs.db
+*.log
+.git_portable/
+mingit.zip
+make_commits.ps1
