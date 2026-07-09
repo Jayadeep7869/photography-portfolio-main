@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maya Rodriguez — Portrait Photographer | LensArt</title>
+  <meta name="description" content="Explore Maya Rodriguez's stunning portrait and editorial photography portfolio. Striking faces, compelling stories, and iconic imagery from New York City." />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/gallery.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="../index.html" class="nav-logo">
+    <span class="logo-icon">📷</span>
+    Lens<span>Art</span>
+  </a>
+  <ul class="nav-center">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../index.html#photographers">Photographers</a></li>
+  </ul>
+  <div class="nav-auth" id="nav-auth"></div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="../index.html">Home</a>
+  <a href="../index.html#photographers">Photographers</a>
+  <a href="../login.html">Login</a>
+  <a href="../signup.html" class="btn btn-primary">Sign Up</a>
+</div>
+
+<div class="back-nav">
+  <a href="../index.html">← Back to All Photographers</a>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHOTOGRAPHER HERO
+═══════════════════════════════════════════ -->
+<section class="photographer-hero">
+  <div class="photographer-hero-bg"></div>
+
+  <div class="photographer-profile">
+
+    <div class="profile-avatar-wrapper">
+      <div class="profile-avatar-glow"></div>
+      <img
+        class="profile-avatar"
+        src="../assets/images/maya.png"
+        alt="Maya Rodriguez — Portrait Photographer"
+      />
+      <div class="profile-availability">
+        <span class="availability-dot"></span>
+        Open for commissions
+      </div>
+    </div>
+
+    <div class="profile-info">
+      <div class="profile-specialty">
+        <span class="tag">Portrait</span>
+        <span class="tag">Editorial</span>
+        <span class="tag">Fashion</span>
+        <span class="tag">Fine Art</span>
+      </div>
+
+      <h1 class="profile-name">Maya Rodriguez</h1>
+
+      <p class="profile-location">📍 New York City, New York, USA</p>
+
+      <p class="profile-bio">
+        Maya Rodriguez is a celebrated portrait and editorial photographer whose studio sits
+        in the heart of Brooklyn, New York. With an instinct for finding the soul behind every face,
+        Maya creates images that are as emotionally resonant as they are technically flawless.
+        Her editorial work has appeared in <em>Vogue</em>, <em>Harper's Bazaar</em>, and
+        <em>The New York Times Magazine</em>. Maya has collaborated with top talent agencies,
+        A-list celebrities, and luxury fashion brands, and her fine-art portraits have been shown
+        in galleries from SoHo to Paris.
+      </p>
+
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <span class="profile-stat-value">118</span>
+          <span class="profile-stat-label">Photos</span>
+        </div>
+        <div class="profile-stat">
+          <span class="profile-stat-value">5</span>
+          <span class="profile-stat-label">Awards</span>
+        </div>
+        <div class="profile-stat">
+          <span class="profile-stat-value">200+</span>
+          <span class="profile-stat-label">Clients</span>
+        </div>
+        <div class="profile-stat">
+          <span class="profile-stat-value">7+</span>
+          <span class="profile-stat-label">Years Exp.</span>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button onclick="openBookingModal('Maya Rodriguez')" class="btn btn-primary">✉️ Book Maya</button>
+        <button onclick="toggleFollow('Maya Rodriguez')" class="btn btn-outline" id="follow-btn">❤️ Follow</button>
+        <div class="social-links">
+          <a href="#" class="social-link" title="Instagram">📸</a>
+          <a href="#" class="social-link" title="Twitter">🐦</a>
+          <a href="#" class="social-link" title="Website">🌐</a>
+          <a href="#" class="social-link" title="Behance">🎨</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section">
+  <div class="gallery-controls">
+    <div class="gallery-filters">
+      <button class="filter-btn active" data-filter="all"       onclick="Gallery.filter('all')">All</button>
+      <button class="filter-btn" data-filter="portrait"         onclick="Gallery.filter('portrait')">Portraits</button>
+      <button class="filter-btn" data-filter="editorial"        onclick="Gallery.filter('editorial')">Editorial</button>
+      <button class="filter-btn" data-filter="fashion"          onclick="Gallery.filter('fashion')">Fashion</button>
+      <button class="filter-btn" data-filter="fine-art"         onclick="Gallery.filter('fine-art')">Fine Art</button>
+    </div>
+    <span class="gallery-count">12 photos</span>
+  </div>
+
+  <div class="masonry-grid" id="gallery-grid"></div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo lightbox">
+  <div class="lightbox-content">
+    <img id="lightbox-img" src="" alt="" class="lightbox-img" />
+    <div class="lightbox-info">
+      <span class="lightbox-caption" id="lightbox-caption"></span>
+    </div>
+  </div>
+  <button class="lightbox-close" onclick="Gallery.close()" aria-label="Close">✕</button>
+  <button class="lightbox-prev"  onclick="Gallery.prev()"  aria-label="Previous">‹</button>
+  <button class="lightbox-next"  onclick="Gallery.next()"  aria-label="Next">›</button>
+  <div class="lightbox-counter" id="lightbox-counter">1 / 12</div>
+</div>
+
+<!-- Booking Modal -->
+<div class="booking-modal" id="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
+  <div class="booking-modal-content">
+    <button class="booking-modal-close" onclick="closeBookingModal()">&times;</button>
+    <div class="booking-modal-header">
+      <h2 class="booking-modal-title" id="booking-modal-title">Book Photographer</h2>
+    </div>
+    <div id="booking-form-container">
+      <form class="booking-form" id="booking-form" onsubmit="submitBooking(event)">
+        <input type="hidden" id="booking-photographer-name" name="photographer" value="" />
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-date">Date of Event</label>
+          <input type="date" id="booking-date" class="form-input" required />
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-session">Session Type</label>
+          <select id="booking-session" class="form-input" required>
+            <option value="Portrait">Portrait Session</option>
+            <option value="Landscape">Landscape / Nature Commission</option>
+            <option value="Event">Event / Celebration</option>
+            <option value="Commercial">Commercial / Product</option>
+            <option value="Street">Street / Urban Shoot</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-budget">Estimated Budget</label>
+          <select id="booking-budget" class="form-input" required>
+            <option value="<$500">Under $500</option>
+            <option value="$500-$1000">$500 - $1,000</option>
+            <option value="$1000-$2500">$1,000 - $2,500</option>
+            <option value="$2500+">$2,500+</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-details">Session Details / Vision</label>
+          <textarea id="booking-details" class="form-input" placeholder="Tell us about your shoot: location, style, and expectations..." required></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">
+          Submit Booking Request
+        </button>
+      </form>
+    </div>
+    
+    <div id="booking-guest-container" style="display: none; text-align: center; padding: 1rem 0;">
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+        You need a LensArt account to hire photographers. Log in or create a free account to book a session, check schedules, and manage your bookings.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a id="booking-login-link" href="../login.html" class="btn btn-primary">Sign In</a>
+        <a id="booking-signup-link" href="../signup.html" class="btn btn-outline">Sign Up Free</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer style="background:var(--bg-secondary);border-top:1px solid var(--border);padding:2.5rem 2rem;text-align:center;">
+  <p style="color:var(--text-muted);font-size:0.875rem;">
+    © 2026 LensArt ·
+    <a href="alex.html"  style="color:var(--accent);text-decoration:none;">← Alex Chen</a> ·
+    <a href="../index.html" style="color:var(--accent);text-decoration:none;">Home</a> ·
+    <a href="sofia.html" style="color:var(--accent);text-decoration:none;">Sofia Andersson →</a>
+  </p>
+</footer>
+
+<script src="../js/auth.js"></script>
+<script src="../js/gallery.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  Auth.updateNav('../');
+
+  // Booking Flow
+  window.openBookingModal = function(photographerName) {
+    if (!Auth.isLoggedIn()) {
+      if (window.FeatureActivation) {
+        FeatureActivation.showGate('booking');
+      } else {
+        const modal = document.getElementById('booking-modal');
+        const formContainer = document.getElementById('booking-form-container');
+        const guestContainer = document.getElementById('booking-guest-container');
+        const title = document.getElementById('booking-modal-title');
+        
+        document.getElementById('booking-photographer-name').value = photographerName;
+        title.textContent = `Book ${photographerName}`;
+        formContainer.style.display = 'none';
+        guestContainer.style.display = 'block';
+        const currentUrl = encodeURIComponent(window.location.href);
+        document.getElementById('booking-login-link').href = `../login.html?redirect=${currentUrl}`;
+        document.getElementById('booking-signup-link').href = `../signup.html?redirect=${currentUrl}`;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      return;
+    }
+
+    const modal = document.getElementById('booking-modal');
+    const formContainer = document.getElementById('booking-form-container');
+    const guestContainer = document.getElementById('booking-guest-container');
+    const title = document.getElementById('booking-modal-title');
+    
+    document.getElementById('booking-photographer-name').value = photographerName;
+    title.textContent = `Book ${photographerName}`;
+    
+    formContainer.style.display = 'block';
+    guestContainer.style.display = 'none';
+    const dateInput = document.getElementById('booking-date');
+    if (dateInput) {
+      dateInput.min = new Date().toISOString().split('T')[0];
+    }
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeBookingModal = function() {
+    const modal = document.getElementById('booking-modal');
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  };
+
+  window.submitBooking = function(e) {
+    e.preventDefault();
+    if (!Auth.isLoggedIn()) return;
+    
+    const user = Auth.getCurrentUser();
+    const photographer = document.getElementById('booking-photographer-name').value;
+    const date = document.getElementById('booking-date').value;
+    const session = document.getElementById('booking-session').value;
+    const budget = document.getElementById('booking-budget').value;
+    const details = document.getElementById('booking-details').value;
+    
+    const newBooking = {
+      id: 'bk_' + Date.now(),
+      userId: user.id,
+      userEmail: user.email,
+      userName: user.name,
+      photographer: photographer,
+      date: date,
+      session: session,
+      budget: budget,
+      details: details,
+      status: 'Pending Approval',
+      createdAt: new Date().toISOString()
+    };
+    
+    let bookings = [];
+    try {
+      bookings = JSON.parse(localStorage.getItem('photofolio_bookings') || '[]');
+    } catch(err) {
+      bookings = [];
+    }
+    bookings.push(newBooking);
+    localStorage.setItem('photofolio_bookings', JSON.stringify(bookings));
+    
+    closeBookingModal();
+    
+    if (window.showToast) {
+      window.showToast(`Request sent to ${photographer}! Check dashboard.`);
+    } else {
+      alert(`Booking request submitted to ${photographer}!`);
+    }
+    
+    document.getElementById('booking-form').reset();
+  };
+
+  // Follow Flow
+  window.toggleFollow = function(photographerName) {
+    if (!Auth.isLoggedIn()) {
+      if (window.FeatureActivation) {
+        FeatureActivation.showGate('follow');
+      } else {
+        const currentUrl = encodeURIComponent(window.location.href);
+        window.location.href = `../login.html?redirect=${currentUrl}`;
+      }
+      return;
+    }
+    
+    const user = Auth.getCurrentUser();
+    const followsKey = 'photofolio_follows_' + user.id;
+    
+    let follows = [];
+    try {
+      follows = JSON.parse(localStorage.getItem(followsKey) || '[]');
+    } catch(e) {
+      follows = [];
+    }
+    
+    const isFollowing = follows.includes(photographerName);
+    const btn = document.getElementById('follow-btn');
+    
+    if (isFollowing) {
+      follows = follows.filter(name => name !== photographerName);
+      if (btn) {
+        btn.textContent = '❤️ Follow';
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-outline');
+      }
+      window.showToast(`Unfollowed ${photographerName}`);
+    } else {
+      follows.push(photographerName);
+      if (btn) {
+        btn.textContent = '❤️ Following';
+        btn.classList.remove('btn-outline');
+        btn.classList.add('btn-primary');
+      }
+      window.showToast(`You are now following ${photographerName}!`);
+    }
+    
+    localStorage.setItem(followsKey, JSON.stringify(follows));
+  };
+
+  window.initFollowButton = function(photographerName) {
+    if (!Auth.isLoggedIn()) return;
+    const user = Auth.getCurrentUser();
+    const followsKey = 'photofolio_follows_' + user.id;
+    
+    let follows = [];
+    try {
+      follows = JSON.parse(localStorage.getItem(followsKey) || '[]');
+    } catch(e) {
+      follows = [];
+    }
+    
+    const btn = document.getElementById('follow-btn');
+    if (btn && follows.includes(photographerName)) {
+      btn.textContent = '❤️ Following';
+      btn.classList.remove('btn-outline');
+      btn.classList.add('btn-primary');
+    }
+  };
+
+  // Initialize
+  initFollowButton('Maya Rodriguez');
+
+  // Maya's portrait / editorial gallery
+  const mayaPhotos = [
+    { src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=900&q=80&auto=format&fit=crop', alt: 'Bold Portrait', caption: 'Untitled — Studio Series I', category: 'portrait' },
+    { src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&q=80&auto=format&fit=crop', alt: 'Woman Portrait', caption: 'Golden Light — Brooklyn Studio', category: 'portrait' },
+    { src: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=900&q=80&auto=format&fit=crop', alt: 'Natural Smile', caption: 'Genuine — Natural Light Series', category: 'fine-art' },
+    { src: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900&q=80&auto=format&fit=crop', alt: 'Fashion Portrait', caption: 'Editorial — Spring Collection', category: 'fashion' },
+    { src: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=900&q=80&auto=format&fit=crop', alt: 'Joyful Portrait', caption: 'Radiance — Candid Series', category: 'portrait' },
+    { src: 'https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?w=900&q=80&auto=format&fit=crop', alt: 'Dramatic Lighting', caption: 'Shadow Play — Studio B', category: 'editorial' },
+    { src: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=900&q=80&auto=format&fit=crop', alt: 'Editorial Look', caption: 'High Fashion — NYC Rooftop', category: 'editorial' },
+    { src: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=900&q=80&auto=format&fit=crop', alt: 'Soft Portrait', caption: 'Bloom — Fine Art Portrait', category: 'fine-art' },
+    { src: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&q=80&auto=format&fit=crop', alt: 'Dramatic Portrait', caption: 'Strength — Empowerment Series', category: 'editorial' },
+    { src: 'https://images.unsplash.com/photo-1545912452-8aea7e25a3d3?w=900&q=80&auto=format&fit=crop', alt: 'Fashion Shot', caption: 'Avant Garde — Fashion Week', category: 'fashion' },
+    { src: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=900&q=80&auto=format&fit=crop', alt: 'Close-Up Portrait', caption: 'Details — Micro Portrait', category: 'fine-art' },
+    { src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=900&q=80&auto=format&fit=crop', alt: 'Creative Portrait', caption: 'Artistry — Gallery Exhibition', category: 'fine-art' },
+  ];
+
+  Gallery.render('gallery-grid', mayaPhotos);
+</script>
+</body>
+</html>
+
+<!-- polished -->
