@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photographer Profile | LensArt</title>
+  <meta name="description" content="Explore professional photography portfolios from LensArt members." />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/gallery.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>" />
+  <style>
+    /* Gradient Avatar for custom photographers */
+    .profile-avatar-placeholder {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 20px;
+      border: 2px solid var(--border);
+      box-shadow: 0 32px 64px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      text-transform: uppercase;
+      font-family: 'Playfair Display', serif;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="../index.html" class="nav-logo">
+    <span class="logo-icon">📷</span>
+    Lens<span>Art</span>
+  </a>
+  <ul class="nav-center">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../index.html#photographers">Photographers</a></li>
+  </ul>
+  <div class="nav-auth" id="nav-auth"></div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- Mobile nav -->
+<div class="mobile-nav" id="mobile-nav">
+  <a href="../index.html">Home</a>
+  <a href="../index.html#photographers">Photographers</a>
+  <a href="../login.html">Login</a>
+  <a href="../signup.html" class="btn btn-primary">Sign Up</a>
+</div>
+
+<div class="back-nav">
+  <a href="../index.html">← Back to All Photographers</a>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHOTOGRAPHER HERO
+     (Populated Dynamically)
+═══════════════════════════════════════════ -->
+<section class="photographer-hero">
+  <div class="photographer-hero-bg"></div>
+
+  <div class="photographer-profile">
+
+    <!-- Avatar -->
+    <div class="profile-avatar-wrapper" id="avatar-container">
+      <div class="profile-avatar-glow"></div>
+      <div class="profile-avatar-placeholder" id="profile-initials">?</div>
+      <div class="profile-availability">
+        <span class="availability-dot"></span>
+        Available for bookings
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="profile-info">
+      <div class="profile-specialty" id="profile-specialties">
+        <span class="tag">Photographer</span>
+      </div>
+
+      <h1 class="profile-name" id="profile-name">Photographer Name</h1>
+
+      <p class="profile-location" id="profile-location">📍 Location</p>
+
+      <p class="profile-bio" id="profile-bio">
+        Photographer bio content...
+      </p>
+
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <span class="profile-stat-value" id="stat-photos-count">0</span>
+          <span class="profile-stat-label">Photos</span>
+        </div>
+        <div class="profile-stat">
+          <span class="profile-stat-value" id="stat-rate-display">$0/hr</span>
+          <span class="profile-stat-label">Rate</span>
+        </div>
+        <div class="profile-stat">
+          <span class="profile-stat-value" id="stat-views-display">120</span>
+          <span class="profile-stat-label">Views</span>
+        </div>
+        <div class="profile-stat">
+          <span class="profile-stat-value" id="stat-followers-display">0</span>
+          <span class="profile-stat-label">Followers</span>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button onclick="triggerBookingModal()" class="btn btn-primary" id="hire-btn">✉️ Commission</button>
+        <button onclick="handleFollowToggle()" class="btn btn-outline" id="follow-btn">❤️ Follow</button>
+        <div class="social-links">
+          <a href="#" class="social-link" title="Instagram">📸</a>
+          <a href="#" class="social-link" title="Twitter">🐦</a>
+          <a href="#" class="social-link" title="Website">🌐</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     GALLERY
+═══════════════════════════════════════════ -->
+<section class="gallery-section">
+  <div class="gallery-controls">
+    <div class="gallery-filters" style="visibility: hidden;">
+      <button class="filter-btn active" data-filter="all" onclick="Gallery.filter('all')">All</button>
+    </div>
+    <span class="gallery-count" id="gallery-count">0 photos</span>
+  </div>
+
+  <div class="masonry-grid" id="gallery-grid"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     LIGHTBOX
+═══════════════════════════════════════════ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo lightbox">
+  <div class="lightbox-content">
+    <img id="lightbox-img" src="" alt="" class="lightbox-img" />
+    <div class="lightbox-info">
+      <span class="lightbox-caption" id="lightbox-caption"></span>
+    </div>
+  </div>
+  <button class="lightbox-close" onclick="Gallery.close()" aria-label="Close">✕</button>
+  <button class="lightbox-prev"  onclick="Gallery.prev()"  aria-label="Previous">‹</button>
+  <button class="lightbox-next"  onclick="Gallery.next()"  aria-label="Next">›</button>
+  <div class="lightbox-counter" id="lightbox-counter">1 / 12</div>
+</div>
+
+<!-- Booking Modal -->
+<div class="booking-modal" id="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
+  <div class="booking-modal-content">
+    <button class="booking-modal-close" onclick="closeBookingModal()">&times;</button>
+    <div class="booking-modal-header">
+      <h2 class="booking-modal-title" id="booking-modal-title">Book Photographer</h2>
+    </div>
+    <div id="booking-form-container">
+      <form class="booking-form" id="booking-form" onsubmit="submitBooking(event)">
+        <input type="hidden" id="booking-photographer-name" name="photographer" value="" />
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-date">Date of Event</label>
+          <input type="date" id="booking-date" class="form-input" required />
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-session">Session Type</label>
+          <select id="booking-session" class="form-input" required>
+            <option value="Portrait">Portrait Session</option>
+            <option value="Landscape">Landscape / Nature Commission</option>
+            <option value="Event">Event / Celebration</option>
+            <option value="Commercial">Commercial / Product</option>
+            <option value="Street">Street / Urban Shoot</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-budget">Estimated Budget</label>
+          <select id="booking-budget" class="form-input" required>
+            <option value="<$500">Under $500</option>
+            <option value="$500-$1000">$500 - $1,000</option>
+            <option value="$1000-$2500">$1,000 - $2,500</option>
+            <option value="$2500+">$2,500+</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-details">Session Details / Vision</label>
+          <textarea id="booking-details" class="form-input" placeholder="Tell us about your shoot: location, style, and expectations..." required></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">
+          Submit Booking Request
+        </button>
+      </form>
+    </div>
+    
+    <div id="booking-guest-container" style="display: none; text-align: center; padding: 1rem 0;">
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+        You need a LensArt account to hire photographers. Log in or create a free account to book a session, check schedules, and manage your bookings.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a id="booking-login-link" href="../login.html" class="btn btn-primary">Sign In</a>
+        <a id="booking-signup-link" href="../signup.html" class="btn btn-outline">Sign Up Free</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer style="background:var(--bg-secondary);border-top:1px solid var(--border);padding:2.5rem 2rem;text-align:center;">
+  <p style="color:var(--text-muted);font-size:0.875rem;">
+    © 2026 LensArt · <a href="../index.html" style="color:var(--accent);text-decoration:none;">Back to Home</a>
+  </p>
+</footer>
+
+<script src="../js/auth.js"></script>
+<script src="../js/gallery.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  Auth.updateNav('../');
+
+  // Load photographer data based on URL parameter (?id=usr_xxx)
+  let photographer = null;
+  const urlParams = new URLSearchParams(window.location.search);
+  const photographerId = urlParams.get('id');
+
+  function initProfile() {
+    if (!photographerId) {
+      alert("No photographer ID specified.");
+      window.location.href = '../index.html';
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('photofolio_users') || '[]');
+    photographer = users.find(u => u.id === photographerId && u.role === 'photographer');
+
+    if (!photographer) {
+      alert("Photographer profile not found.");
+      window.location.href = '../index.html';
+      return;
+    }
+
+    // Populate data
+    document.getElementById('profile-name').textContent = photographer.name;
+    document.title = `${photographer.name} — Photographer | LensArt`;
+    document.getElementById('profile-initials').textContent = photographer.name.charAt(0).toUpperCase();
+    document.getElementById('profile-location').textContent = `📍 ${photographer.location || 'Paris, France'}`;
+    document.getElementById('profile-bio').textContent = photographer.bio || 'Professional photographer ready for bookings.';
+    document.getElementById('stat-rate-display').textContent = `$${photographer.rate || '150'}/hr`;
+
+    // Render specialty tags
+    const specialtiesContainer = document.getElementById('profile-specialties');
+    specialtiesContainer.innerHTML = '';
+    const tags = (photographer.specialty || 'Portrait').split(',').map(t => t.trim());
+    tags.forEach(tag => {
+      const tagSpan = document.createElement('span');
+      tagSpan.className = 'tag';
+      tagSpan.textContent = tag;
+      specialtiesContainer.appendChild(tagSpan);
+    });
+
+    // Hire button label
+    document.getElementById('hire-btn').textContent = `✉️ Book ${photographer.name.split(' ')[0]}`;
+
+    // Render stats
+    // Views stats
+    const statsKey = `photofolio_profile_views_${photographerId}`;
+    let profileViews = parseInt(localStorage.getItem(statsKey) || '0');
+    profileViews += 1; // Increment view count
+    localStorage.setItem(statsKey, profileViews.toString());
+    document.getElementById('stat-views-display').textContent = profileViews;
+
+    // Followers count
+    updateFollowersCount();
+
+    // Render dynamic gallery
+    const photos = photographer.portfolioPhotos || [];
+    document.getElementById('stat-photos-count').textContent = photos.length;
+    document.getElementById('gallery-count').textContent = `${photos.length} photos`;
+
+    if (photos.length > 0) {
+      // Map base64 string photos to format suitable for Gallery
+      const galleryPhotos = photos.map((src, idx) => ({
+        src: src,
+        alt: `${photographer.name} portfolio photo ${idx + 1}`,
+        caption: `${photographer.name} — Showcase Image #${idx + 1}`,
+        category: 'all'
+      }));
+      Gallery.render('gallery-grid', galleryPhotos);
+    } else {
+      document.getElementById('gallery-grid').innerHTML = `
+        <div class="empty-gallery-msg" style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--text-muted);">
+          No portfolio photos have been uploaded by this photographer yet.
+        </div>
+      `;
+    }
+
+    initFollowButton();
+  }
+
+  // Follow Button states
+  function initFollowButton() {
+    if (!Auth.isLoggedIn()) return;
+    const user = Auth.getCurrentUser();
+    const followsKey = 'photofolio_follows_' + user.id;
+    let follows = JSON.parse(localStorage.getItem(followsKey) || '[]');
+    
+    const btn = document.getElementById('follow-btn');
+    if (btn && follows.includes(photographer.name)) {
+      btn.textContent = '❤️ Following';
+      btn.classList.remove('btn-outline');
+      btn.classList.add('btn-primary');
+    }
+  }
+
+  function updateFollowersCount() {
+    // Count how many clients are following this photographer
+    let totalFollowers = 0;
+    const users = JSON.parse(localStorage.getItem('photofolio_users') || '[]');
+    users.forEach(u => {
+      const followsKey = 'photofolio_follows_' + u.id;
+      const follows = JSON.parse(localStorage.getItem(followsKey) || '[]');
+      if (follows.includes(photographer.name)) {
+        totalFollowers++;
+      }
+    });
+    // Add realistic starting base for visual appeal
+    const mockFollowersBase = (photographerId.charCodeAt(photographerId.length - 1) % 40) + 12;
+    document.getElementById('stat-followers-display').textContent = totalFollowers + mockFollowersBase;
+  }
+
+  window.handleFollowToggle = function() {
+    if (!Auth.isLoggedIn()) {
+      if (window.FeatureActivation) {
+        FeatureActivation.showGate('follow');
+      } else {
+        const currentUrl = encodeURIComponent(window.location.href);
+        window.location.href = `../login.html?redirect=${currentUrl}`;
+      }
+      return;
+    }
+    
+    const user = Auth.getCurrentUser();
+    const followsKey = 'photofolio_follows_' + user.id;
+    let follows = JSON.parse(localStorage.getItem(followsKey) || '[]');
+    
+    const isFollowing = follows.includes(photographer.name);
+    const btn = document.getElementById('follow-btn');
+    
+    if (isFollowing) {
+      follows = follows.filter(name => name !== photographer.name);
+      if (btn) {
+        btn.textContent = '❤️ Follow';
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-outline');
+      }
+      window.showToast(`Unfollowed ${photographer.name}`);
+    } else {
+      follows.push(photographer.name);
+      if (btn) {
+        btn.textContent = '❤️ Following';
+        btn.classList.remove('btn-outline');
+        btn.classList.add('btn-primary');
+      }
+      window.showToast(`You are now following ${photographer.name}!`);
+    }
+    
+    localStorage.setItem(followsKey, JSON.stringify(follows));
+    updateFollowersCount();
+  };
+
+  // Booking Flow Trigger
+  window.triggerBookingModal = function() {
+    if (!Auth.isLoggedIn()) {
+      if (window.FeatureActivation) {
+        FeatureActivation.showGate('booking');
+      } else {
+        const modal = document.getElementById('booking-modal');
+        const formContainer = document.getElementById('booking-form-container');
+        const guestContainer = document.getElementById('booking-guest-container');
+        const title = document.getElementById('booking-modal-title');
+        
+        document.getElementById('booking-photographer-name').value = photographer.name;
+        title.textContent = `Book ${photographer.name}`;
+        formContainer.style.display = 'none';
+        guestContainer.style.display = 'block';
+        const currentUrl = encodeURIComponent(window.location.href);
+        document.getElementById('booking-login-link').href = `../login.html?redirect=${currentUrl}`;
+        document.getElementById('booking-signup-link').href = `../signup.html?redirect=${currentUrl}`;
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      return;
+    }
+
+    const modal = document.getElementById('booking-modal');
+    const formContainer = document.getElementById('booking-form-container');
+    const guestContainer = document.getElementById('booking-guest-container');
+    const title = document.getElementById('booking-modal-title');
+    
+    document.getElementById('booking-photographer-name').value = photographer.name;
+    title.textContent = `Book ${photographer.name}`;
+    
+    formContainer.style.display = 'block';
+    guestContainer.style.display = 'none';
+    const dateInput = document.getElementById('booking-date');
+    if (dateInput) {
+      dateInput.min = new Date().toISOString().split('T')[0];
+    }
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeBookingModal = function() {
+    const modal = document.getElementById('booking-modal');
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  };
+
+  window.submitBooking = function(e) {
+    e.preventDefault();
+    if (!Auth.isLoggedIn()) return;
+    
+    const user = Auth.getCurrentUser();
+    const date = document.getElementById('booking-date').value;
+    const session = document.getElementById('booking-session').value;
+    const budget = document.getElementById('booking-budget').value;
+    const details = document.getElementById('booking-details').value;
+    
+    const newBooking = {
+      id: 'bk_' + Date.now(),
+      userId: user.id,
+      userEmail: user.email,
+      userName: user.name,
+      // We also store photographer ID to let them filter requests
+      photographerId: photographer.id, 
+      photographer: photographer.name,
+      date: date,
+      session: session,
+      budget: budget,
+      details: details,
+      status: 'Pending Approval',
+      createdAt: new Date().toISOString()
+    };
+    
+    let bookings = [];
+    try {
+      bookings = JSON.parse(localStorage.getItem('photofolio_bookings') || '[]');
+    } catch(err) {
+      bookings = [];
+    }
+    bookings.push(newBooking);
+    localStorage.setItem('photofolio_bookings', JSON.stringify(bookings));
+    
+    closeBookingModal();
+    window.showToast(`Request sent to ${photographer.name}!`);
+    document.getElementById('booking-form').reset();
+  };
+
+  // Run on load
+  initProfile();
+</script>
+</body>
+</html>
