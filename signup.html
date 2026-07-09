@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — LensArt Photography Portfolio</title>
+  <meta name="description" content="Join LensArt for free. Create your account to explore, save, and enjoy world-class photography portfolios." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>" />
+</head>
+<body>
+
+<div class="auth-bg-blob-1"></div>
+<div class="auth-bg-blob-2"></div>
+<div class="auth-bg-grid"></div>
+
+<main class="auth-page">
+  <div class="auth-container">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <a href="index.html">
+        <span class="logo-icon">📷</span>
+        Lens<span>Art</span>
+      </a>
+    </div>
+
+    <!-- Card -->
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <h1 class="auth-title">Create Account ✨</h1>
+        <p class="auth-subtitle">Join LensArt free and start exploring stunning photography.</p>
+      </div>
+
+      <!-- Alert -->
+      <div class="alert alert-error" id="signup-alert" role="alert">
+        <span class="alert-icon">⚠️</span>
+        <span id="signup-alert-text"></span>
+      </div>
+
+      <!-- Form -->
+      <form id="signup-form" novalidate>
+
+        <!-- Full name -->
+        <div class="form-group">
+          <label class="form-label" for="full-name">Full Name</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input
+              type="text"
+              id="full-name"
+              name="name"
+              class="form-input"
+              placeholder="Jane Smith"
+              autocomplete="name"
+              required
+            />
+          </div>
+          <span class="form-error" id="name-error">⚠ Please enter your full name.</span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <span class="form-error" id="email-error">⚠ Please enter a valid email address.</span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔑</span>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-input"
+              placeholder="At least 6 characters"
+              autocomplete="new-password"
+              required
+              minlength="6"
+            />
+            <button type="button" class="toggle-password" id="toggle-pw" aria-label="Toggle">👁</button>
+          </div>
+          <span class="form-error" id="password-error">⚠ Password must be at least 6 characters.</span>
+          <!-- Strength meter -->
+          <div class="password-strength" id="strength-meter" style="display:none;">
+            <div class="strength-bars">
+              <div class="strength-bar" id="bar-1"></div>
+              <div class="strength-bar" id="bar-2"></div>
+              <div class="strength-bar" id="bar-3"></div>
+              <div class="strength-bar" id="bar-4"></div>
+            </div>
+            <div class="strength-label">
+              <span>Password strength:</span>
+              <span id="strength-text">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirm password -->
+        <div class="form-group">
+          <label class="form-label" for="confirm-password">Confirm Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm_password"
+              class="form-input"
+              placeholder="Repeat your password"
+              autocomplete="new-password"
+              required
+            />
+          </div>
+          <span class="form-error" id="confirm-error">⚠ Passwords do not match.</span>
+        </div>
+
+        <!-- Account Type (Role) -->
+        <div class="form-group">
+          <label class="form-label" for="role">Account Type</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <select id="role" name="role" class="form-input" required style="padding-left: 2.75rem; background: var(--bg-primary);">
+              <option value="client">Client (I want to hire photographers)</option>
+              <option value="photographer">Photographer (I want to showcase portfolio &amp; find work)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Terms -->
+        <p class="terms-text">
+          By creating an account you agree to our
+          <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+        </p>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary btn-submit" id="signup-btn">
+          Create My Account →
+        </button>
+
+      </form>
+
+      <p class="auth-footer-link">
+        Already have an account? <a href="login.html" id="login-link">Sign in here</a>
+      </p>
+    </div>
+
+    <div style="text-align:center;margin-top:1.5rem;">
+      <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+  </div>
+</main>
+
+<script src="js/auth.js"></script>
+<script>
+  Auth.redirectIfLoggedIn('dashboard.html');
+
+  // Toggle password
+  document.getElementById('toggle-pw').addEventListener('click', function() {
+    const pw = document.getElementById('password');
+    const isText = pw.type === 'text';
+    pw.type = isText ? 'password' : 'text';
+    this.textContent = isText ? '👁' : '🙈';
+  });
+
+  // Password strength meter
+  document.getElementById('password').addEventListener('input', function() {
+    const val = this.value;
+    const meter = document.getElementById('strength-meter');
+    const text  = document.getElementById('strength-text');
+    const bars  = [
+      document.getElementById('bar-1'),
+      document.getElementById('bar-2'),
+      document.getElementById('bar-3'),
+      document.getElementById('bar-4')
+    ];
+
+    if (!val) { meter.style.display = 'none'; return; }
+    meter.style.display = 'block';
+
+    // Score
+    let score = 0;
+    if (val.length >= 6)  score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+    if (/[0-9]/.test(val) && /[^A-Za-z0-9]/.test(val)) score++;
+
+    const levels = ['', 'weak', 'weak', 'medium', 'strong'];
+    const labels = { weak: '🔴 Weak', medium: '🟡 Fair', strong: '🟢 Strong' };
+
+    bars.forEach((bar, i) => {
+      bar.className = 'strength-bar';
+      if (i < score) bar.classList.add(levels[score]);
+    });
+
+    text.textContent = labels[levels[score]] || '—';
+  });
+
+  // Form submit
+  document.getElementById('signup-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name     = document.getElementById('full-name').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm  = document.getElementById('confirm-password').value;
+
+    // Clear
+    ['name-error','email-error','password-error','confirm-error'].forEach(id => {
+      document.getElementById(id).classList.remove('show');
+    });
+    ['full-name','email','password','confirm-password'].forEach(id => {
+      document.getElementById(id).classList.remove('error');
+    });
+    document.getElementById('signup-alert').classList.remove('show');
+
+    let valid = true;
+
+    if (!name) {
+      document.getElementById('name-error').classList.add('show');
+      document.getElementById('full-name').classList.add('error');
+      valid = false;
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      document.getElementById('email-error').classList.add('show');
+      document.getElementById('email').classList.add('error');
+      valid = false;
+    }
+    if (!password || password.length < 6) {
+      document.getElementById('password-error').classList.add('show');
+      document.getElementById('password').classList.add('error');
+      valid = false;
+    }
+    if (password !== confirm) {
+      document.getElementById('confirm-error').classList.add('show');
+      document.getElementById('confirm-password').classList.add('error');
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    const role = document.getElementById('role').value;
+
+    const btn = document.getElementById('signup-btn');
+    btn.textContent = 'Creating account…';
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    setTimeout(() => {
+      const result = Auth.signup(name, email, password, role);
+
+      if (result.success) {
+        btn.textContent = '✔ Account created! Redirecting…';
+        const params = new URLSearchParams(window.location.search);
+        const redir = params.get('redirect');
+
+        // Run terminal boot sequence if available
+        if (window.FeatureActivation) {
+          FeatureActivation.runActivationSequence(() => {
+            window.location.href = redir ? decodeURIComponent(redir) : 'dashboard.html';
+          });
+        } else {
+          setTimeout(() => { window.location.href = redir ? decodeURIComponent(redir) : 'dashboard.html'; }, 800);
+        }
+      } else {
+        document.getElementById('signup-alert-text').textContent = result.message;
+        document.getElementById('signup-alert').classList.add('show');
+        btn.textContent = 'Create My Account →';
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    }, 600);
+  });
+
+  // Preserve redirect parameter
+  const params = new URLSearchParams(window.location.search);
+  const redir = params.get('redirect');
+  if (redir) {
+    document.getElementById('login-link').href = `login.html?redirect=${encodeURIComponent(redir)}`;
+  }
+</script>
+</body>
+</html>
