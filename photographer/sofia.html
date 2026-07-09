@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sofia Andersson — Street Photographer | LensArt</title>
+  <meta name="description" content="Explore Sofia Andersson's raw and vibrant street photography portfolio. Neon-lit Tokyo alleys, urban life, and human stories captured in documentary style." />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/gallery.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="../index.html" class="nav-logo">
+    <span class="logo-icon">📷</span>
+    Lens<span>Art</span>
+  </a>
+  <ul class="nav-center">
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../index.html#photographers">Photographers</a></li>
+  </ul>
+  <div class="nav-auth" id="nav-auth"></div>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-nav" id="mobile-nav">
+  <a href="../index.html">Home</a>
+  <a href="../index.html#photographers">Photographers</a>
+  <a href="../login.html">Login</a>
+  <a href="../signup.html" class="btn btn-primary">Sign Up</a>
+</div>
+
+<div class="back-nav">
+  <a href="../index.html">← Back to All Photographers</a>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHOTOGRAPHER HERO
+═══════════════════════════════════════════ -->
+<section class="photographer-hero">
+  <div class="photographer-hero-bg"></div>
+
+  <div class="photographer-profile">
+
+    <div class="profile-avatar-wrapper">
+      <div class="profile-avatar-glow"></div>
+      <img
+        class="profile-avatar"
+        src="../assets/images/sofia.png"
+        alt="Sofia Andersson — Street Photographer"
+      />
+      <div class="profile-availability">
+        <span class="availability-dot"></span>
+        Accepting new projects
+      </div>
+    </div>
+
+    <div class="profile-info">
+      <div class="profile-specialty">
+        <span class="tag">Street</span>
+        <span class="tag">Urban</span>
+        <span class="tag">Documentary</span>
+        <span class="tag">Night Photography</span>
+      </div>
+
+      <h1 class="profile-name">Sofia Andersson</h1>
+
+      <p class="profile-location">📍 Tokyo, Japan</p>
+
+      <p class="profile-bio">
+        Sofia Andersson is a Swedish-born street and documentary photographer who traded Stockholm's
+        winters for Tokyo's electric chaos. Armed with nothing but a 35mm lens and an instinct for
+        the decisive moment, Sofia weaves through the neon-lit alleys of Shinjuku and Shibuya,
+        capturing unscripted stories of urban humanity. Her raw, unfiltered imagery has been
+        recognised by the <em>World Press Photo</em> foundation, featured in <em>TIME</em> magazine,
+        and exhibited across Tokyo, Berlin, and Stockholm. Sofia believes every city has a heartbeat —
+        and she's dedicated to recording it one frame at a time.
+      </p>
+
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <span class="profile-stat-value">98</span>
+          <span class="profile-stat-label">Photos</span>
+        </div>
+        <div class="profile-stat">
+          <span class="profile-stat-value">4</span>
+          <span class="profile-stat-label">Awards</span>
+        </div>
+        <div class="profile-stat">
+          <span class="profile-stat-value">25</span>
+          <span class="profile-stat-label">Cities</span>
+        </div>
+        <div class="profile-stat">
+          <span class="profile-stat-value">6+</span>
+          <span class="profile-stat-label">Years Exp.</span>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button onclick="openBookingModal('Sofia Andersson')" class="btn btn-primary">✉️ Hire Sofia</button>
+        <button onclick="toggleFollow('Sofia Andersson')" class="btn btn-outline" id="follow-btn">❤️ Follow</button>
+        <div class="social-links">
+          <a href="#" class="social-link" title="Instagram">📸</a>
+          <a href="#" class="social-link" title="Twitter">🐦</a>
+          <a href="#" class="social-link" title="Website">🌐</a>
+          <a href="#" class="social-link" title="Flickr">🎨</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section">
+  <div class="gallery-controls">
+    <div class="gallery-filters">
+      <button class="filter-btn active" data-filter="all"       onclick="Gallery.filter('all')">All</button>
+      <button class="filter-btn" data-filter="street"           onclick="Gallery.filter('street')">Street</button>
+      <button class="filter-btn" data-filter="night"            onclick="Gallery.filter('night')">Night</button>
+      <button class="filter-btn" data-filter="urban"            onclick="Gallery.filter('urban')">Urban</button>
+      <button class="filter-btn" data-filter="people"           onclick="Gallery.filter('people')">People</button>
+    </div>
+    <span class="gallery-count">12 photos</span>
+  </div>
+
+  <div class="masonry-grid" id="gallery-grid"></div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo lightbox">
+  <div class="lightbox-content">
+    <img id="lightbox-img" src="" alt="" class="lightbox-img" />
+    <div class="lightbox-info">
+      <span class="lightbox-caption" id="lightbox-caption"></span>
+    </div>
+  </div>
+  <button class="lightbox-close" onclick="Gallery.close()" aria-label="Close">✕</button>
+  <button class="lightbox-prev"  onclick="Gallery.prev()"  aria-label="Previous">‹</button>
+  <button class="lightbox-next"  onclick="Gallery.next()"  aria-label="Next">›</button>
+  <div class="lightbox-counter" id="lightbox-counter">1 / 12</div>
+</div>
+
+<!-- Booking Modal -->
+<div class="booking-modal" id="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
+  <div class="booking-modal-content">
+    <button class="booking-modal-close" onclick="closeBookingModal()">&times;</button>
+    <div class="booking-modal-header">
+      <h2 class="booking-modal-title" id="booking-modal-title">Book Photographer</h2>
+    </div>
+    <div id="booking-form-container">
+      <form class="booking-form" id="booking-form" onsubmit="submitBooking(event)">
+        <input type="hidden" id="booking-photographer-name" name="photographer" value="" />
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-date">Date of Event</label>
+          <input type="date" id="booking-date" class="form-input" required />
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-session">Session Type</label>
+          <select id="booking-session" class="form-input" required>
+            <option value="Portrait">Portrait Session</option>
+            <option value="Landscape">Landscape / Nature Commission</option>
+            <option value="Event">Event / Celebration</option>
+            <option value="Commercial">Commercial / Product</option>
+            <option value="Street">Street / Urban Shoot</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-budget">Estimated Budget</label>
+          <select id="booking-budget" class="form-input" required>
+            <option value="<$500">Under $500</option>
+            <option value="$500-$1000">$500 - $1,000</option>
+            <option value="$1000-$2500">$1,000 - $2,500</option>
+            <option value="$2500+">$2,500+</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="booking-details">Session Details / Vision</label>
+          <textarea id="booking-details" class="form-input" placeholder="Tell us about your shoot: location, style, and expectations..." required></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">
+          Submit Booking Request
+        </button>
+      </form>
+    </div>
+    
+    <div id="booking-guest-container" style="display: none; text-align: center; padding: 1rem 0;">
+      <p style="color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+        You need a LensArt account to hire photographers. Log in or create a free account to book a session, check schedules, and manage your bookings.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a id="booking-login-link" href="../login.html" class="btn btn-primary">Sign In</a>
+        <a id="booking-signup-link" href="../signup.html" class="btn btn-outline">Sign Up Free</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer style="background:var(--bg-secondary);border-top:1px solid var(--border);padding:2.5rem 2rem;text-align:center;">
+  <p style="color:var(--text-muted);font-size:0.875rem;">
+    © 2026 LensArt ·
+    <a href="maya.html" style="color:var(--accent);text-decoration:none;">← Maya Rodriguez</a> ·
+    <a href="../index.html" style="color:var(--accent);text-decoration:none;">Home</a>
+  </p>
+</footer>
+
+<script src="../js/auth.js"></script>
+<script src="../js/gallery.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  Auth.updateNav('../');
+
+  // Booking Flow
+  window.openBookingModal = function(photographerName) {
+    if (!Auth.isLoggedIn()) {
+      if (window.FeatureActivation) {
+        FeatureActivation.showGate('booking');
+      } else {
+        const modal = document.getElementById('booking-modal');
+        const formContainer = document.getElementById('booking-form-container');
+        const guestContainer = document.getElementById('booking-guest-container');
+        const title = document.getElementById('booking-modal-title');
+        
+        document.getElementById('booking-photographer-name').value = photographerName;
+        title.textContent = `Book ${photographerName}`;
+        formContainer.style.display = 'none';
+        guestContainer.style.display = 'block';
+        const currentUrl = encodeURIComponent(window.location.href);
+        document.getElementById('booking-login-link').href = `../login.html?redirect=${currentUrl}`;
+        document.getElementById('booking-signup-link').href = `../signup.html?redirect=${currentUrl}`;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      return;
+    }
+
+    const modal = document.getElementById('booking-modal');
+    const formContainer = document.getElementById('booking-form-container');
+    const guestContainer = document.getElementById('booking-guest-container');
+    const title = document.getElementById('booking-modal-title');
+    
+    document.getElementById('booking-photographer-name').value = photographerName;
+    title.textContent = `Book ${photographerName}`;
+    
+    formContainer.style.display = 'block';
+    guestContainer.style.display = 'none';
+    const dateInput = document.getElementById('booking-date');
+    if (dateInput) {
+      dateInput.min = new Date().toISOString().split('T')[0];
+    }
+    
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeBookingModal = function() {
+    const modal = document.getElementById('booking-modal');
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  };
+
+  window.submitBooking = function(e) {
+    e.preventDefault();
+    if (!Auth.isLoggedIn()) return;
+    
+    const user = Auth.getCurrentUser();
+    const photographer = document.getElementById('booking-photographer-name').value;
+    const date = document.getElementById('booking-date').value;
+    const session = document.getElementById('booking-session').value;
+    const budget = document.getElementById('booking-budget').value;
+    const details = document.getElementById('booking-details').value;
+    
+    const newBooking = {
+      id: 'bk_' + Date.now(),
+      userId: user.id,
+      userEmail: user.email,
+      userName: user.name,
+      photographer: photographer,
+      date: date,
+      session: session,
+      budget: budget,
+      details: details,
+      status: 'Pending Approval',
+      createdAt: new Date().toISOString()
+    };
+    
+    let bookings = [];
+    try {
+      bookings = JSON.parse(localStorage.getItem('photofolio_bookings') || '[]');
+    } catch(err) {
+      bookings = [];
+    }
+    bookings.push(newBooking);
+    localStorage.setItem('photofolio_bookings', JSON.stringify(bookings));
+    
+    closeBookingModal();
+    
+    if (window.showToast) {
+      window.showToast(`Request sent to ${photographer}! Check dashboard.`);
+    } else {
+      alert(`Booking request submitted to ${photographer}!`);
+    }
+    
+    document.getElementById('booking-form').reset();
+  };
+
+  // Follow Flow
+  window.toggleFollow = function(photographerName) {
+    if (!Auth.isLoggedIn()) {
+      if (window.FeatureActivation) {
+        FeatureActivation.showGate('follow');
+      } else {
+        const currentUrl = encodeURIComponent(window.location.href);
+        window.location.href = `../login.html?redirect=${currentUrl}`;
+      }
+      return;
+    }
+    
+    const user = Auth.getCurrentUser();
+    const followsKey = 'photofolio_follows_' + user.id;
+    
+    let follows = [];
+    try {
+      follows = JSON.parse(localStorage.getItem(followsKey) || '[]');
+    } catch(e) {
+      follows = [];
+    }
+    
+    const isFollowing = follows.includes(photographerName);
+    const btn = document.getElementById('follow-btn');
+    
+    if (isFollowing) {
+      follows = follows.filter(name => name !== photographerName);
+      if (btn) {
+        btn.textContent = '❤️ Follow';
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-outline');
+      }
+      window.showToast(`Unfollowed ${photographerName}`);
+    } else {
+      follows.push(photographerName);
+      if (btn) {
+        btn.textContent = '❤️ Following';
+        btn.classList.remove('btn-outline');
+        btn.classList.add('btn-primary');
+      }
+      window.showToast(`You are now following ${photographerName}!`);
+    }
+    
+    localStorage.setItem(followsKey, JSON.stringify(follows));
+  };
+
+  window.initFollowButton = function(photographerName) {
+    if (!Auth.isLoggedIn()) return;
+    const user = Auth.getCurrentUser();
+    const followsKey = 'photofolio_follows_' + user.id;
+    
+    let follows = [];
+    try {
+      follows = JSON.parse(localStorage.getItem(followsKey) || '[]');
+    } catch(e) {
+      follows = [];
+    }
+    
+    const btn = document.getElementById('follow-btn');
+    if (btn && follows.includes(photographerName)) {
+      btn.textContent = '❤️ Following';
+      btn.classList.remove('btn-outline');
+      btn.classList.add('btn-primary');
+    }
+  };
+
+  // Initialize
+  initFollowButton('Sofia Andersson');
+
+  // Sofia's street / urban / Tokyo gallery
+  const sofiaPhotos = [
+    { src: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=900&q=80&auto=format&fit=crop', alt: 'City at Night', caption: 'Neon Reflections — Shinjuku, Tokyo', category: 'night' },
+    { src: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=900&q=80&auto=format&fit=crop', alt: 'Urban Skyline', caption: 'Concrete Jungle — Urban Architecture', category: 'urban' },
+    { src: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=900&q=80&auto=format&fit=crop', alt: 'Street Scene', caption: 'The Crossing — Tokyo Intersection', category: 'street' },
+    { src: 'https://images.unsplash.com/photo-1444723121867-7a241cacace9?w=900&q=80&auto=format&fit=crop', alt: 'Urban Alley', caption: 'Side Street — Harajuku Alley', category: 'urban' },
+    { src: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=900&q=80&auto=format&fit=crop', alt: 'Night Street', caption: 'After Midnight — Street Series', category: 'night' },
+    { src: 'https://images.unsplash.com/photo-1503551723145-6c040742065b?w=900&q=80&auto=format&fit=crop', alt: 'Night Lights', caption: 'Electric Night — Akihabara', category: 'night' },
+    { src: 'https://images.unsplash.com/photo-1465447142348-e9952c393450?w=900&q=80&auto=format&fit=crop', alt: 'City Skyline', caption: 'Skyline at Dusk — Shibuya Crossing', category: 'urban' },
+    { src: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900&q=80&auto=format&fit=crop', alt: 'Street Market', caption: 'Market Day — Tsukiji, Tokyo', category: 'people' },
+    { src: 'https://images.unsplash.com/photo-1514565131-fce0801e6f44?w=900&q=80&auto=format&fit=crop', alt: 'Urban Patterns', caption: 'Geometry — Urban Abstractions', category: 'urban' },
+    { src: 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=900&q=80&auto=format&fit=crop', alt: 'City Crowd', caption: 'Rush Hour — Shinjuku Station', category: 'people' },
+    { src: 'https://images.unsplash.com/photo-1534430480872-3498386e7856?w=900&q=80&auto=format&fit=crop', alt: 'Street Photography', caption: 'Solitude — Tokyo Backstreet', category: 'street' },
+    { src: 'https://images.unsplash.com/photo-1490644658840-3f2e3f8c5625?w=900&q=80&auto=format&fit=crop', alt: 'Urban Life', caption: 'Urban Flow — Documentary Series', category: 'people' },
+  ];
+
+  Gallery.render('gallery-grid', sofiaPhotos);
+</script>
+</body>
+</html>
+
+<!-- polished -->
